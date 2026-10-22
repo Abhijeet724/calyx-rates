@@ -16,7 +16,7 @@ LoginResult _login({String payoutCountryId = '', String? image}) => LoginResult(
       branchID: '2',
       currencyID: '22',
       currencyCode: 'GBP',
-      currencySign: 'Â£',
+      currencySign: '£',
       payoutCountryId: payoutCountryId,
       profileImagePath: image,
       token: 't',
