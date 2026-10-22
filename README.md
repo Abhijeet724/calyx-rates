@@ -17,12 +17,15 @@ Flutter task submission for Calyx Solutions.
 ## Assumptions (not explicitly defined in the task)
 
 - **Empty `payoutCountryId`:** the app shows rates for the first available
-  country. The API exposes no country-list endpoint (the task brief defines
-  only `checklogin` and `dashboardrates`; list-style routes resolve to
-  catch-all parameter routes such as `rate/{id}`), so the app probes
-  candidate country IDs in ascending order (parallel batches of 5) and uses
-  the lowest one that returns rate records. For the provided test account
-  this is Nigeria (countryID 6: NGN, USD, INR rates).
+  country. The ordering comes from the API's own country list at
+  `POST /pilot/api/country/countrylist` (only `clientID` + `branchID`, no
+  token; for this tenant 71 countries, Australia first, Nigeria second).
+  The app walks that list in order (parallel batches of 5) and uses the
+  first country that returns rate records. For the provided test account
+  the list's first entry, Australia, returns "No Records Found" for rates,
+  so the app shows Nigeria (countryID 6: NGN, USD, INR rates). If the
+  country-list call itself fails, a small configured candidate ID list is
+  used as a backup.
 - **Selected country returns no data:** if `payoutCountryId` is set but its
   rate request returns no records, the app applies the same
   first-available-country fallback. If no country returns records at all,
